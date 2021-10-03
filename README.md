@@ -7,7 +7,7 @@
 * [과제 제출 방법](https://github.com/next-step/nextstep-docs/tree/master/precourse)
 
 ## 기능 목록
-* 랜덤값 생성[ ]
+* 랜덤값 생성[O]
 * 숫자 입력[ ]
 	* Console API를 통한 사용자 입력[ ]
 	* 유효성 검사[ ]
