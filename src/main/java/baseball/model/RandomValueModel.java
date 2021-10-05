@@ -11,7 +11,7 @@ public class RandomValueModel {
     public List<Integer> getRandomValueList() {
         List<Integer> randomValueList = new ArrayList<>();
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < NumberRangeEnum.NUMBER_SIZE.getNumber(); i++) {
             randomValueList.add(getRandomValue(randomValueList));
         }
 

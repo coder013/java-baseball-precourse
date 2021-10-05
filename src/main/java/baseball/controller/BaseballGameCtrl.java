@@ -37,7 +37,7 @@ public class BaseballGameCtrl {
 
             baseballGameView.printResultMessage(resultVo);
 
-            result = resultVo.getStrike() == 3;
+            result = isThreeStrike(resultVo);
         }
     }
     // 게임 시작
@@ -56,6 +56,10 @@ public class BaseballGameCtrl {
         }
     }
     // 재시작 여부
+
+    private boolean isThreeStrike(ResultVo resultVo) {
+        return resultVo.getStrike() == NumberRangeEnum.NUMBER_SIZE.getNumber();
+    }
 
     private List<Integer> getInputValueList(String inputValue) {
         List<Integer> inputValueList = new ArrayList<>();
@@ -101,7 +105,7 @@ public class BaseballGameCtrl {
     }
 
     private boolean checkValidation(String inputValue) {
-        String pattern = String.format("^[%d-%d]{3}$", NumberRangeEnum.START_NUMBER.getNumber(), NumberRangeEnum.END_NUMBER.getNumber());
+        String pattern = String.format("^[%d-%d]{%d}$", NumberRangeEnum.START_NUMBER.getNumber(), NumberRangeEnum.END_NUMBER.getNumber(), NumberRangeEnum.NUMBER_SIZE.getNumber());
 
         if (!inputValue.matches(pattern)) {
             baseballGameView.printValidationMessage();
