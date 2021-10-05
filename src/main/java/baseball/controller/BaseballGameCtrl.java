@@ -1,46 +1,81 @@
 package baseball.controller;
 
 import baseball.enums.NumberRangeEnum;
+import baseball.model.CheckValueModel;
 import baseball.model.RandomValueModel;
 import baseball.view.BaseballGameView;
+import baseball.vo.ResultVo;
 import nextstep.utils.Console;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BaseballGameCtrl {
 
     private final RandomValueModel randomValueModel = new RandomValueModel();
+    private final CheckValueModel checkValueModel = new CheckValueModel();
     private final BaseballGameView baseballGameView = new BaseballGameView();
 
     public BaseballGameCtrl() {
         baseballGameView.printStartMessage();
     }
 
-    public void playBaseballGame() {
+    public void play() {
         try {
-            List<Integer> randomValueList = randomValueModel.getRandomValueList();
-            int inputValue = getInputValueByInt();
+            start();
+            end();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            baseballGameView.printExceptionMessage(e);
         }
     }
 
-    private int getInputValueByInt() {
+    private void start() {
+        List<Integer> randomValueList = randomValueModel.getRandomValueList();
+        boolean result = false;
+
+        while (!result) {
+            List<Integer> inputValueList = getInputValueList(getInputValue());
+            ResultVo resultVo = checkValueModel.getResult(randomValueList, inputValueList);
+
+            baseballGameView.printResultMessage(resultVo);
+
+            result = resultVo.getStrike() == 3;
+        }
+    }
+    // 게임 시작
+
+    private void end() {
+        baseballGameView.printEndMessage();
+    }
+    // 게임 종료
+
+    private List<Integer> getInputValueList(String inputValue) {
+        List<Integer> inputValueList = new ArrayList<>();
+
+        for (String value : inputValue.split("")) {
+            inputValueList.add(Integer.parseInt(value));
+        }
+
+        return inputValueList;
+    }
+    // 사용자가 입력한 숫자를 List<Integer>로 변환하여 가져온다.
+
+    private String getInputValue() {
         String inputValue = "";
         boolean result = false;
 
         while (!result) {
             baseballGameView.printInputMessage();
 
-            inputValue = getInputValue();
+            inputValue = getUserInput();
             result = checkValidation(inputValue);
         }
 
-        return Integer.parseInt(inputValue);
+        return inputValue;
     }
     // 사용자가 입력한 숫자를 가져온다.
 
-    private String getInputValue() {
+    private String getUserInput() {
         return Console.readLine();
     }
 
