@@ -1,12 +1,15 @@
 package baseball.controller;
 
-import baseball.model.BaseballGameModel;
+import baseball.enums.NumberRangeEnum;
+import baseball.model.RandomValueModel;
 import baseball.view.BaseballGameView;
 import nextstep.utils.Console;
 
+import java.util.List;
+
 public class BaseballGameCtrl {
 
-    private final BaseballGameModel baseballGameModel = new BaseballGameModel();
+    private final RandomValueModel randomValueModel = new RandomValueModel();
     private final BaseballGameView baseballGameView = new BaseballGameView();
 
     public BaseballGameCtrl() {
@@ -15,8 +18,7 @@ public class BaseballGameCtrl {
 
     public void playBaseballGame() {
         try {
-            baseballGameModel.setRandomValueList();
-
+            List<Integer> randomValueList = randomValueModel.getRandomValueList();
             int inputValue = getInputValueByInt();
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -43,7 +45,7 @@ public class BaseballGameCtrl {
     }
 
     private boolean checkValidation(String inputValue) {
-        String pattern = "^[1-9]{3}$";
+        String pattern = String.format("^[%d-%d]{3}$", NumberRangeEnum.START_NUMBER.getNumber(), NumberRangeEnum.END_NUMBER.getNumber());
 
         if (!inputValue.matches(pattern)) {
             baseballGameView.printValidationMessage();
