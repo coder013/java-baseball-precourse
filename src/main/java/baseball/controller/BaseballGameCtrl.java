@@ -1,6 +1,7 @@
 package baseball.controller;
 
 import baseball.enums.NumberRangeEnum;
+import baseball.enums.RestartEnum;
 import baseball.model.CheckValueModel;
 import baseball.model.RandomValueModel;
 import baseball.view.BaseballGameView;
@@ -21,16 +22,13 @@ public class BaseballGameCtrl {
     }
 
     public void play() {
-        try {
-            start();
-            end();
-        } catch (Exception e) {
-            baseballGameView.printExceptionMessage(e);
-        }
+        start();
+        end();
     }
 
     private void start() {
         List<Integer> randomValueList = randomValueModel.getRandomValueList();
+
         boolean result = false;
 
         while (!result) {
@@ -46,8 +44,18 @@ public class BaseballGameCtrl {
 
     private void end() {
         baseballGameView.printEndMessage();
+        restart();
     }
     // 게임 종료
+
+    private void restart() {
+        baseballGameView.printRestartMessage();
+
+        if (getRestartValue() == RestartEnum.RESTART.getNumber()) {
+            play();
+        }
+    }
+    // 재시작 여부
 
     private List<Integer> getInputValueList(String inputValue) {
         List<Integer> inputValueList = new ArrayList<>();
@@ -75,6 +83,19 @@ public class BaseballGameCtrl {
     }
     // 사용자가 입력한 숫자를 가져온다.
 
+    private int getRestartValue() {
+        String restartValue = "";
+        boolean result = false;
+
+        while (!result) {
+            restartValue = getUserInput();
+            result = checkRestartValidation(restartValue);
+        }
+
+        return Integer.parseInt(restartValue);
+    }
+    // 사용자가 입력한 재시작 여부를 가져온다.
+
     private String getUserInput() {
         return Console.readLine();
     }
@@ -84,6 +105,17 @@ public class BaseballGameCtrl {
 
         if (!inputValue.matches(pattern)) {
             baseballGameView.printValidationMessage();
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean checkRestartValidation(String restartValue) {
+        String pattern = "^[1-2]$";
+
+        if (!restartValue.matches(pattern)) {
+            baseballGameView.printRestartValidationMessage();
             return false;
         }
 
