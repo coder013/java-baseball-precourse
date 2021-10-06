@@ -13,11 +13,15 @@ import java.util.List;
 
 public class BaseballGameCtrl {
 
-    private final RandomValueModel randomValueModel = new RandomValueModel();
-    private final CheckValueModel checkValueModel = new CheckValueModel();
-    private final BaseballGameView baseballGameView = new BaseballGameView();
+    private final RandomValueModel randomValueModel;
+    private final CheckValueModel checkValueModel;
+    private final BaseballGameView baseballGameView;
 
     public BaseballGameCtrl() {
+        randomValueModel = new RandomValueModel();
+        checkValueModel = new CheckValueModel();
+        baseballGameView = new BaseballGameView();
+
         baseballGameView.printStartMessage();
     }
 
